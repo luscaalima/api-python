@@ -17,12 +17,20 @@ import json
 class Firebase:
     def __init__(self,url): 
         self.url = url
-        
-    def criar_Categoria(self,categoria,item):   
-       print(item)    
-       
-       requisicao = requests.post(f'{self.url}/{categoria}/.json',data=json.dumps("item"))
-       print(requisicao)
-    #    print(requisicao.status)
-       print(requisicao.text)
+    
+    # INCLUIR MUSICA POST)    
+    def criar(self,musica):    
+        print(musica)
+        musyc = {'nome': 'nome-musica', 'cantor': 'nome-cantor'}
+        requisicao = requests.post(f'{self.url}/musica/.json', data=json.dumps(musica))
+        print(requisicao)
+        print(requisicao.text) 
+           
+    def get_musicas(self):
+        requisicao = requests.get(f'{self.url}/musica/.json')
+        # print('requisicao',requisicao)
+        # print('requisicao.text',type(requisicao.text)) 
+        # print('type',type(json.loads(requisicao.text))) 
+        return json.loads(requisicao.text)
+    
      

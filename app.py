@@ -6,23 +6,31 @@ link='https://lucas-firebase-default-rtdb.firebaseio.com'
 
 firebase = Firebase(link)
 
-@app.route('/livros',methods=['GET'])
-def obter_livros():
-    return jsonify('LUCAS')
 
-@app.route('/livros2',methods=['GET'])
-def obter_livros2():
-    return jsonify('LUCAS2')
+@app.route('/criar-musica',methods=['POST'])
+def criar_Musica():
+    musica=request.get_json()
+    firebase.criar(musica)
+    return jsonify(musica)
 
-@app.route('/criarCategoria',methods=['POST'])
-def criar_categoria():
-    body=request.get_json()
-    print(body)
-    print(type(body))
-    print(type(jsonify('Lucas1')))
-    firebase.criar_Categoria('parametro',body)
-    return jsonify(body)
+@app.route('/musica',methods=['GET'])
+def get_Musicas():
+    musicas=firebase.get_musicas()
+    return jsonify(musicas)
 
-
+# @app.route('/musicas-hariel',methods=['GET'])
+# def get_MusicasHariel():
+#     musicas=firebase.get_musicas()
+#     print('type',type(musicas))
+#     print('musicas',musicas)
+#     musicasHariel=[]
+#     for musica in musicas:
+#      print('musica',musicas[musica]['cantor'])
+#     #  if musicas[musica]['cantor']=='MC Hariel':
+#      if musicas[musica]['cantor']=='Matuê':
+#         musicasHariel.append( musicas[musica])
+#         # if (musicas[musica]=='MC Hariel'):
+#         #     musicasHariel.append(musica)
+#     return jsonify(musicasHariel)
 
 app.run(port=5000,host='localhost',debug=True)
