@@ -27,7 +27,7 @@ def get_Musicas():
 
 
 
-@app.route('/editar-musica',methods=['PATCH'])
+@app.route('/editar-musica',methods=['PUT'])
 def edit_Musicas():
     musicas=firebase.get_musicas()
     musicaEdit=request.get_json()
