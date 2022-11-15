@@ -1,6 +1,10 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from app_firebase import *
+from spotify import *
+
+
+
 app=Flask(__name__)
 CORS(app)
 
@@ -12,7 +16,7 @@ firebase = Firebase(link)
 @app.route('/criar-musica',methods=['POST'])
 def criar_Musica():
     musica=request.get_json()
-    print('criar-musica',musica)
+    # print('criar-musica',musica)
     firebase.criar(musica)
     return jsonify(musica)
 
@@ -31,32 +35,46 @@ def get_Musicas():
 def edit_Musicas():
     musicas=firebase.get_musicas()
     musicaEdit=request.get_json()
-    # print('Musica antiga usar para pegar id',musicaEdit[0])
-    # print('Musica nova',musicaEdit[1])
-    all_musicas =[]
+    # all_musicas =[]
     for music in musicas:
-        # print(musicas[music]['nome'])
-        # print(musicas[music]['cantor'])
         if musicas[music]['nome']==musicaEdit[0]['nome'] and  musicas[music]['cantor']==musicaEdit[0]['cantor'] :
-        #  print('id',music)
          firebase.editar_musica(music,musicaEdit[1]) 
          break
        
     return jsonify(musicas)
 
-# @app.route('/musicas-hariel',methods=['GET'])
-# def get_MusicasHariel():
-#     musicas=firebase.get_musicas()
-#     print('type',type(musicas))
-#     print('musicas',musicas)
-#     musicasHariel=[]
-#     for musica in musicas:
-#      print('musica',musicas[musica]['cantor'])
-#     #  if musicas[musica]['cantor']=='MC Hariel':
-#      if musicas[musica]['cantor']=='Matuê':
-#         musicasHariel.append( musicas[musica])
-#         # if (musicas[musica]=='MC Hariel'):
-#         #     musicasHariel.append(usica)
-#     return jsonify(musicasHariel)m
+@app.route('/sp-get-playlists',methods=['GET'])
+def get_playlists():
+    scope='user-read-playback-state'
+    sp = Spotify(scope)
+    print(sp.get_playlists()) 
+    return jsonify(sp.get_playlists())  
+
+@app.route('/sp-get-devices',methods=['GET'])
+def get_devices():
+    scope='user-read-playback-state'
+    sp = Spotify(scope)
+    # device_id=sp.get_devices()['devices'][0]['id']
+    # print('device_id',device_id) 
+    # print(sp.get_devices()) 
+    
+    return jsonify(sp.get_devices()) 
+#GETTER 
+def get_device_id(): 
+    scope='user-read-playback-state'
+    sp = Spotify(scope)
+    return sp.get_devices()['devices'][0]['id']
+ 
+@app.route('/sp-next-music',methods=['GET'])
+def next_music():
+    device_id=get_device_id()
+    print(device_id)
+    scope='user-modify-playback-state'
+    sp = Spotify(scope)
+    sp.next_music(device_id)
+    # print(sp.get_playlists()) 
+    # return jsonify(sp.get_playlists()) 
+    return jsonify("PROXIMA")
+
 
 app.run(port=5000,host='localhost',debug=True)
