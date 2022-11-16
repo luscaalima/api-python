@@ -9,7 +9,6 @@ class Firebase:
     # INCLUIR MUSICA POST)    
     def criar(self,musica):    
         print(musica)
-        musyc = {'nome': 'nome-musica', 'cantor': 'nome-cantor'}
         requisicao = requests.post(f'{self.url}/musica/.json', data=json.dumps(musica))
         print(requisicao)
         print(requisicao.text) 

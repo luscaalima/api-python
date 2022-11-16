@@ -9,6 +9,7 @@ app=Flask(__name__)
 CORS(app)
 
 link='https://lucas-firebase-default-rtdb.firebaseio.com'
+uri ="21xvcn6zyzksfnnnupym6r2ha"
 
 firebase = Firebase(link)
 
@@ -29,8 +30,6 @@ def get_Musicas():
         all_musicas.append(musicas[music])
     return jsonify(all_musicas)
 
-
-
 @app.route('/editar-musica',methods=['PUT'])
 def edit_Musicas():
     musicas=firebase.get_musicas()
@@ -47,34 +46,88 @@ def edit_Musicas():
 def get_playlists():
     scope='user-read-playback-state'
     sp = Spotify(scope)
-    print(sp.get_playlists()) 
-    return jsonify(sp.get_playlists())  
+    
+    playlists=sp.get_playlists()['items']
+    for playlist in  playlists:
+        print('->',playlist,'\n')
+    # print('playlists - >',playlists) 
+    return jsonify(playlists)  
 
-@app.route('/sp-get-devices',methods=['GET'])
-def get_devices():
+# @app.route('/sp-get-devices',methods=['GET'])
+# def get_devices():
+#     scope='user-read-playback-state'
+#     sp = Spotify(scope)
+#     return jsonify(sp.get_devices()) 
+
+@app.route('/sp-get-playlists-musics',methods=['GET'])
+def get_musicas_playlist():
+    scope='user-modify-playback-state'
+    sp = Spotify(scope)
+    musicas_playlist=sp.get_musicas_playlist('7arOXPDBqETizFMQmAD1zB')
+    print(musicas_playlist)
+    # print(sp.get_playlists()) 
+    # return jsonify(sp.get_playlists()) 
+    return jsonify(musicas_playlist)
+
+
+@app.route('/sp-next-music',methods=['GET'])
+def next_music():
+    device_id=get_device_id()
+    # print(device_id)
+    scope='user-modify-playback-state'
+    sp = Spotify(scope)
+    sp.next_music(device_id)
+    return jsonify("PROXIMA")
+
+
+@app.route('/sp-create-playlist',methods=['POST'])
+def create_playlist():
+    user_id =get_me()
+    scope = "playlist-modify-public"
+    sp = Spotify(scope)
+    sp.create_playlist(user_id,"nome da playlist")
+    return jsonify("PROXIMA")
+
+
+# @app.route('/sp-add-music-playlist',methods=['POST'])
+# def add_music_playlist():
+#     scope = "playlist-modify-public"
+#     sp = Spotify(scope)
+#     sp.add_music_playlist("7arOXPDBqETizFMQmAD1zB","track:3ZtHHGpAPSWC7Gnios4lmK")
+#     return jsonify("PROXIMA")
+
+
+
+@app.route('/sp-add-next-music',methods=['POST'])
+def add_next_music():
+    idMusica='7HjZD0NPC1hzFpjUjo45GR'
+    uri=f'spotify:track:{idMusica}'
+    scope='user-modify-playback-state'
+    sp = Spotify(scope)
+    sp.add_next_music(uri)
+    return jsonify("ADD")
+
+@app.route('/sp-music-now',methods=['GET'])
+def music_now():
+    idMusica='7HjZD0NPC1hzFpjUjo45GR'
     scope='user-read-playback-state'
     sp = Spotify(scope)
-    # device_id=sp.get_devices()['devices'][0]['id']
-    # print('device_id',device_id) 
-    # print(sp.get_devices()) 
-    
-    return jsonify(sp.get_devices()) 
-#GETTER 
+    sp.music_now()
+    return jsonify(sp.music_now())
+
+
+#GETTERS
 def get_device_id(): 
     scope='user-read-playback-state'
     sp = Spotify(scope)
     return sp.get_devices()['devices'][0]['id']
- 
-@app.route('/sp-next-music',methods=['GET'])
-def next_music():
-    device_id=get_device_id()
-    print(device_id)
-    scope='user-modify-playback-state'
+
+def get_me(): 
+    scope='user-read-private'
     sp = Spotify(scope)
-    sp.next_music(device_id)
-    # print(sp.get_playlists()) 
-    # return jsonify(sp.get_playlists()) 
-    return jsonify("PROXIMA")
+    # print(sp.get_me()['id'])
+    return sp.get_me()['id']
+ 
 
 
 app.run(port=5000,host='localhost',debug=True)
