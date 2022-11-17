@@ -116,6 +116,14 @@ def music_now():
     sp.music_now()
     return jsonify(sp.music_now())
 
+@app.route('/sp-brabos',methods=['GET'])
+def brabos():
+    scope='user-top-read'
+    sp = Spotify(scope)
+    sp.brabos()
+    return jsonify(sp.brabos()['items'])
+
+
 
 #GETTERS
 def get_device_id(): 
