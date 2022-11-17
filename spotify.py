@@ -31,8 +31,8 @@ class Spotify:
     def create_playlist(self,user_id,nome_playlist):
       return self.sp.user_playlist_create(user_id,name=nome_playlist)
         
-    # def add_music_playlist(self,playlist_id,items):
-    #   return self.sp.playlist_add_items(playlist_id=playlist_id,items=items,position=2)
+    def add_music_playlist(self,playlist_id,items):
+      return  self.sp.playlist_add_items(playlist_id=playlist_id,items=items,position=1)
 
     def get_musicas_playlist(self,id):
       return  self.sp.playlist_items(id)

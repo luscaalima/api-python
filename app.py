@@ -89,12 +89,13 @@ def create_playlist():
     return jsonify("PROXIMA")
 
 
-# @app.route('/sp-add-music-playlist',methods=['POST'])
-# def add_music_playlist():
-#     scope = "playlist-modify-public"
-#     sp = Spotify(scope)
-#     sp.add_music_playlist("7arOXPDBqETizFMQmAD1zB","track:3ZtHHGpAPSWC7Gnios4lmK")
-#     return jsonify("PROXIMA")
+@app.route('/sp-add-music-playlist',methods=['POST'])
+def add_music_playlist():
+    scope = "playlist-modify-public"
+    sp = Spotify(scope)
+    items=["spotify:track:3ZtHHGpAPSWC7Gnios4lmK","spotify:track:1iaPDgTbsKrlznVu13EWIf"]
+    sp.add_music_playlist("7arOXPDBqETizFMQmAD1zB",items)
+    return jsonify("PROXIMA")
 
 
 

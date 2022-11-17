@@ -6,7 +6,7 @@ class Firebase:
     def __init__(self,url): 
         self.url = url
     
-    # INCLUIR MUSICA POST)    
+    # INCLUIR MUSICA POST FIREBASE    
     def criar(self,musica):    
         print(musica)
         requisicao = requests.post(f'{self.url}/musica/.json', data=json.dumps(musica))
