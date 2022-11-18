@@ -101,8 +101,7 @@ def add_music_playlist():
 
 @app.route('/sp-add-next-music',methods=['POST'])
 def add_next_music():
-    idMusica='7HjZD0NPC1hzFpjUjo45GR'
-    uri=f'spotify:track:{idMusica}'
+    uri =request.get_json()['uri']
     scope='user-modify-playback-state'
     sp = Spotify(scope)
     sp.add_next_music(uri)

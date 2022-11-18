@@ -44,4 +44,4 @@ class Spotify:
       return  self.sp.currently_playing()
     
     def brabos(self):
-      return self.sp.current_user_top_tracks(limit=5)
+      return self.sp.current_user_top_tracks(limit=8)
