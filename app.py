@@ -128,12 +128,19 @@ def add_music_likes():
     scope='user-library-modify'
     sp = Spotify(scope)
     track_body = request.get_json()
-    print(track_body)
-    print('here')
-    track='65CB461aKF5FvIuuzqUgXu'
+    track=track_body['uri']
     sp.add_music_likes(track)
     return jsonify(sp.add_music_likes(track))
 
+
+@app.route('/sp-del-music-likes',methods=['PUT'])
+def del_music_likes():
+    scope='user-library-modify'
+    sp = Spotify(scope)
+    track_body = request.get_json()
+    track=track_body['uri']
+    sp.del_music_likes(track)
+    return jsonify(sp.del_music_likes(track))
 
 
 #GETTERS

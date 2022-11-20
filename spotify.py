@@ -50,3 +50,8 @@ class Spotify:
       list_tracks = []
       list_tracks.append(tracks)
       return self.sp.current_user_saved_tracks_add(tracks= list_tracks)
+    
+    def del_music_likes(self,tracks):
+      list_tracks = []
+      list_tracks.append(tracks)
+      return self.sp.current_user_saved_tracks_delete(tracks= list_tracks)
