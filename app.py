@@ -123,6 +123,18 @@ def brabos():
     return jsonify(sp.brabos()['items'])
 
 
+@app.route('/sp-add-music-likes',methods=['POST'])
+def add_music_likes():
+    scope='user-library-modify'
+    sp = Spotify(scope)
+    track_body = request.get_json()
+    print(track_body)
+    print('here')
+    track='65CB461aKF5FvIuuzqUgXu'
+    sp.add_music_likes(track)
+    return jsonify(sp.add_music_likes(track))
+
+
 
 #GETTERS
 def get_device_id(): 

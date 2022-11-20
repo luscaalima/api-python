@@ -45,3 +45,8 @@ class Spotify:
     
     def brabos(self):
       return self.sp.current_user_top_tracks(limit=8)
+    
+    def add_music_likes(self,tracks):
+      list_tracks = []
+      list_tracks.append(tracks)
+      return self.sp.current_user_saved_tracks_add(tracks= list_tracks)
