@@ -46,7 +46,6 @@ def edit_Musicas():
 def get_playlists():
     scope='user-read-playback-state'
     sp = Spotify(scope)
-    
     playlists=sp.get_playlists()['items']
     for playlist in  playlists:
         print('->',playlist,'\n')
@@ -59,14 +58,14 @@ def get_playlists():
 #     sp = Spotify(scope)
 #     return jsonify(sp.get_devices()) 
 
-@app.route('/sp-get-playlists-musics',methods=['GET'])
+@app.route('/sp-get-playlists-musics',methods=['POST'])
 def get_musicas_playlist():
     scope='user-modify-playback-state'
     sp = Spotify(scope)
-    musicas_playlist=sp.get_musicas_playlist('7arOXPDBqETizFMQmAD1zB')
-    print(musicas_playlist)
-    # print(sp.get_playlists()) 
-    # return jsonify(sp.get_playlists()) 
+    id_playlist = request.get_json()['id_playlist']
+    # print(id_playlist)
+    musicas_playlist=sp.get_musicas_playlist(id_playlist)
+    # print(musicas_playlist)
     return jsonify(musicas_playlist)
 
 
@@ -93,8 +92,13 @@ def create_playlist():
 def add_music_playlist():
     scope = "playlist-modify-public"
     sp = Spotify(scope)
-    items=["spotify:track:3ZtHHGpAPSWC7Gnios4lmK","spotify:track:1iaPDgTbsKrlznVu13EWIf"]
-    sp.add_music_playlist("7arOXPDBqETizFMQmAD1zB",items)
+    body = request.get_json()
+    # print(body)
+    playlist_id = body['playlist_id']
+    items=[]
+    items.append(body['uri_track'])
+    # items=["spotify:track:3ZtHHGpAPSWC7Gnios4lmK","spotify:track:1iaPDgTbsKrlznVu13EWIf"]
+    sp.add_music_playlist(playlist_id,items)
     return jsonify("PROXIMA")
 
 
